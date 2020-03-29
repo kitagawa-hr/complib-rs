@@ -3,10 +3,11 @@ name = "complib-rs"
 version = "0.1.0"
 authors = ["Haruki Kitagawa <kitagawahr@gmail.com>"]
 edition = "2018"
-
+exclude = ["assets/*"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+itertools = "0.9"
 
 [dev-dependencies]
 proconio = "*"

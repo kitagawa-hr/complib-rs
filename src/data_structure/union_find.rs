@@ -9,7 +9,7 @@ pub struct UnionFind<T> {
 impl<T> UnionFind<T>
     where T: Add<Output=T> + Clone + Copy + From<u8> + Neg<Output=T> + Sub<Output=T>
 {
-    fn new(n: usize) -> Self {
+    pub fn new(n: usize) -> Self {
         UnionFind {
             parents: (0..n).map(|i| i).collect(),
             ranks: vec![1; n],
@@ -17,7 +17,7 @@ impl<T> UnionFind<T>
         }
     }
 
-    fn find(&mut self, x: usize) -> usize {
+    pub fn find(&mut self, x: usize) -> usize {
         if x == self.parents[x] { return x; }
         let root = self.find(self.parents[x]);
         self.weights[x] = self.weights[x] + self.weights[self.parents[x]];
@@ -25,7 +25,7 @@ impl<T> UnionFind<T>
         return root;
     }
 
-    fn unite(&mut self, x: usize, y: usize, weight: T) -> bool {
+    pub fn unite(&mut self, x: usize, y: usize, weight: T) -> bool {
         // weights[x]+ weight = weights[y]
         let x_root = self.find(x);
         let y_root = self.find(y);
@@ -41,22 +41,17 @@ impl<T> UnionFind<T>
         true
     }
 
-    fn diff(&mut self, x: usize, y: usize) -> T {
+    pub fn diff(&mut self, x: usize, y: usize) -> T {
         self.find(x);
         self.weights[y] - self.weights[x]
     }
 
-    fn size(&mut self, x: usize) -> usize {
+    pub fn size(&mut self, x: usize) -> usize {
         let root = self.find(x);
         self.ranks[root]
     }
 
-    fn equiv(&mut self, x: usize, y: usize) -> bool {
+    pub fn equiv(&mut self, x: usize, y: usize) -> bool {
         self.find(x) == self.find(y)
     }
-}
-
-[#cfg(test)]
-mod tests{
-    
 }
