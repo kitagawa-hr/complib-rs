@@ -38,3 +38,51 @@ fn union_find_test() {
         },
     );
 }
+
+#[test]
+fn union_find_weight_test() {
+    // AOJ 1330
+    // http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1330
+    util::test_solution(
+        "tests/assets/union_find_weight",
+        |input_str| {
+            let mut source = AutoSource::from(input_str);
+            let mut v = Vec::new();
+            loop {
+                input! {
+                    from &mut source,
+                    n: usize,
+                    m: usize,
+                }
+                if (n == 0) && (m == 0) { break; }
+                let mut uf = UnionFind::new(n);
+                for _ in 0..m {
+                    input! {
+                        from &mut source,
+                        query: char
+                    }
+                    if query == '!' {
+                        input! {
+                            from &mut source,
+                            a: usize,
+                            b: usize,
+                            w: i64,
+                        }
+                        uf.unite(a - 1, b - 1, w);
+                    } else {
+                        input! {
+                            from &mut source,
+                            a: usize,
+                            b: usize,
+                        }
+                        if uf.equiv(a - 1, b - 1) {
+                            v.push(format!("{}", uf.diff(a - 1, b - 1)));
+                        } else {
+                            v.push(String::from("UNKNOWN"));
+                        }
+                    }
+                }
+            }
+            v.iter().join("\n")
+        })
+}

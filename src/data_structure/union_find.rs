@@ -7,7 +7,7 @@ pub struct UnionFind<T> {
 }
 
 impl<T> UnionFind<T>
-    where T: Add<Output=T> + Clone + Copy + From<u8> + Neg<Output=T> + Sub<Output=T>
+    where T: Add<Output=T> + Clone + Copy + From<u8> + Sub<Output=T>
 {
     pub fn new(n: usize) -> Self {
         UnionFind {
@@ -33,7 +33,7 @@ impl<T> UnionFind<T>
         let (smaller, bigger, new_weight) = if self.size(x_root) >= self.size(y_root) {
             (y_root, x_root, self.weights[x] - self.weights[y] + weight)
         } else {
-            (x_root, y_root, -(self.weights[x] - self.weights[y] + weight))
+            (x_root, y_root, self.weights[y] - self.weights[x] - weight)
         };
         self.parents[smaller] = bigger;
         self.ranks[bigger] += self.ranks[smaller];
