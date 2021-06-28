@@ -1,4 +1,4 @@
-use std::ops::{Add, Sub, Neg};
+use std::ops::{Add, Sub};
 
 pub struct UnionFind<T> {
     parents: Vec<usize>,
@@ -7,7 +7,8 @@ pub struct UnionFind<T> {
 }
 
 impl<T> UnionFind<T>
-    where T: Add<Output=T> + Clone + Copy + From<u8> + Sub<Output=T>
+where
+    T: Add<Output = T> + Clone + Copy + From<u8> + Sub<Output = T>,
 {
     pub fn new(n: usize) -> Self {
         UnionFind {
@@ -18,7 +19,9 @@ impl<T> UnionFind<T>
     }
 
     pub fn find(&mut self, x: usize) -> usize {
-        if x == self.parents[x] { return x; }
+        if x == self.parents[x] {
+            return x;
+        }
         let root = self.find(self.parents[x]);
         self.weights[x] = self.weights[x] + self.weights[self.parents[x]];
         self.parents[x] = root;
@@ -29,7 +32,9 @@ impl<T> UnionFind<T>
         // weights[x]+ weight = weights[y]
         let x_root = self.find(x);
         let y_root = self.find(y);
-        if x_root == y_root { return false; }
+        if x_root == y_root {
+            return false;
+        }
         let (smaller, bigger, new_weight) = if self.size(x_root) >= self.size(y_root) {
             (y_root, x_root, self.weights[x] - self.weights[y] + weight)
         } else {

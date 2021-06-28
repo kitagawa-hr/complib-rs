@@ -4,8 +4,8 @@ use std::path::PathBuf;
 use itertools::izip;
 
 pub fn test_solution<F>(dir_path: &str, solution: F)
-    where
-        F: Fn(&str) -> String,
+where
+    F: Fn(&str) -> String,
 {
     let inp_dir = format!("{}/{}", dir_path, "in");
     let ans_dir = format!("{}/{}", dir_path, "out");
@@ -22,7 +22,8 @@ fn read_dir_to_strings(dir_path: &str) -> Vec<String> {
         .map(|entry| entry.unwrap().path())
         .collect();
     paths.sort();
-    paths.into_iter()
+    paths
+        .into_iter()
         .map(|path| fs::read_to_string(path.as_path()).unwrap())
         .collect()
 }
