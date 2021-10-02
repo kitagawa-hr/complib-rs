@@ -1,15 +1,25 @@
 use super::graph::{Graph, WeightedEdge};
 use std::cmp::Reverse;
 
-fn build_path(pre_nodes: &Vec<usize>, start: usize, goal: usize) -> Vec<usize> {
-    let mut cur = goal;
-    let mut path = vec![goal];
-    while cur != start {
-        path.push(pre_nodes[cur]);
-        cur = pre_nodes[cur];
+// Result Container for Single Source Shortest Path
+pub struct SSSPResult<W> {
+    start: usize,
+    pub costs: Vec<W>,
+    pre_nodes: Vec<usize>,
+}
+impl<W> SSSPResult<W> {
+    // build shortest path to goal
+    // Complexity: O(|path|)
+    pub fn build_path(&self, goal: usize) -> Vec<usize> {
+        let mut cur = goal;
+        let mut path = vec![goal];
+        while cur != self.start {
+            path.push(self.pre_nodes[cur]);
+            cur = self.pre_nodes[cur];
+        }
+        path.reverse();
+        path
     }
-    path.reverse();
-    path
 }
 
 // Dijkstra's shortest path algorithm.
@@ -23,10 +33,10 @@ pub fn dijkstra<
 >(
     graph: &G,
     start: usize,
-    goal: usize,
+    goal: Option<usize>,
     zero: W,
     inf: W,
-) -> Option<(W, Vec<usize>)> {
+) -> SSSPResult<W> {
     // (cost, position, pre_node)
     let mut costs: Vec<_> = (0..graph.node_count()).map(|_| inf).collect();
     let mut pre_nodes: Vec<_> = (0..graph.node_count()).map(|i| i).collect();
@@ -39,9 +49,8 @@ pub fn dijkstra<
         if cur_cost > costs[cur_node] {
             continue;
         }
-        if cur_node == goal {
-            let path = build_path(&pre_nodes, start, goal);
-            return Some((cur_cost, path));
+        if goal.is_some() && cur_node == goal.unwrap() {
+            break;
         }
         graph.edges_from(cur_node).for_each(|edge| {
             let next_cost = cur_cost + edge.weight();
@@ -53,7 +62,11 @@ pub fn dijkstra<
             }
         })
     }
-    None
+    SSSPResult {
+        start,
+        costs,
+        pre_nodes,
+    }
 }
 
 #[cfg(test)]
@@ -96,16 +109,18 @@ mod tests {
     #[test]
     fn test_dijkstra() {
         let graph = setup_graph();
-        assert_eq!(dijkstra(&graph, 0, 1, 0, usize::MAX), Some((1, vec![0, 1])));
-        assert_eq!(
-            dijkstra(&graph, 0, 3, 0, usize::MAX),
-            Some((3, vec![0, 1, 3]))
-        );
-        assert_eq!(dijkstra(&graph, 3, 0, 0, usize::MAX), Some((7, vec![3, 0])));
-        assert_eq!(
-            dijkstra(&graph, 0, 4, 0, usize::MAX),
-            Some((5, vec![0, 1, 3, 4]))
-        );
-        assert_eq!(dijkstra(&graph, 4, 0, 0, usize::MAX), None);
+        const INF: usize = std::usize::MAX;
+        let result = dijkstra(&graph, 0, None, 0, INF);
+        assert_eq!(result.costs, vec![0, 1, 10, 3, 5]);
+        assert_eq!(result.build_path(0), vec![0]);
+        assert_eq!(result.build_path(1), vec![0, 1]);
+        assert_eq!(result.build_path(2), vec![0, 2]);
+        assert_eq!(result.build_path(3), vec![0, 1, 3]);
+        assert_eq!(result.build_path(4), vec![0, 1, 3, 4]);
+        let result = dijkstra(&graph, 2, None, 0, INF);
+        assert_eq!(result.costs, vec![10, 1, 0, 3, 1]);
+        assert_eq!(result.build_path(1), vec![2, 1]);
+        assert_eq!(result.build_path(2), vec![2]);
+        assert_eq!(result.build_path(4), vec![2, 4]);
     }
 }
