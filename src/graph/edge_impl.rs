@@ -1,4 +1,4 @@
-pub use super::graph::{Edge, WeightedEdge};
+pub use super::{Edge, WeightedEdge};
 
 impl Edge for (usize, usize) {
     fn start(&self) -> usize {

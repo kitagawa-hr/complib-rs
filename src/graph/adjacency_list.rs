@@ -1,4 +1,4 @@
-use super::graph::{Edge, Graph};
+use super::{Edge, Graph};
 
 /// Graph implementation using adjacent list
 /// Space Complexity: O(|N|+|E|)

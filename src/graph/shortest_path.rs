@@ -1,4 +1,4 @@
-use super::graph::{Graph, WeightedEdge};
+use super::{Graph, WeightedEdge};
 use std::cmp::Reverse;
 
 // Result Container for Single Source Shortest Path
