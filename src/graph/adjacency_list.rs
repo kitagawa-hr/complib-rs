@@ -1,5 +1,6 @@
 use super::graph::{Edge, Graph};
 
+/// Graph implementation using adjacent list
 /// Space Complexity: O(|N|+|E|)
 #[derive(Debug)]
 pub struct AdjListGraph<N, E> {
@@ -8,10 +9,11 @@ pub struct AdjListGraph<N, E> {
     node_count: usize,
     edge_count: usize,
 }
-impl<N, E> AdjListGraph<N, E> {
+impl<N, E: Edge> AdjListGraph<N, E> {
     fn node_exists(&self, node_id: usize) -> bool {
         node_id < self.nodes.len() && self.nodes[node_id].is_some()
     }
+    /// create a new graph with empty nodes
     #[allow(dead_code)]
     pub fn new(size: usize) -> Self {
         let nodes = std::iter::repeat_with(|| None)
@@ -27,18 +29,30 @@ impl<N, E> AdjListGraph<N, E> {
             edge_count: 0,
         }
     }
+
+    /// create a new graph from nodes
     #[allow(dead_code)]
     pub fn from_nodes(nodes: Vec<N>) -> Self {
         let nodes = nodes.into_iter().map(Some).collect::<Vec<_>>();
         let adj_list = std::iter::repeat_with(|| Vec::new())
             .take(nodes.len())
             .collect::<Vec<_>>();
+        let node_count = nodes.len();
         AdjListGraph {
             nodes,
             adj_list,
-            node_count: 0,
+            node_count,
             edge_count: 0,
         }
+    }
+
+    #[allow(dead_code)]
+    pub fn from_edges(nodes: Vec<N>, edges: Vec<E>) -> Self {
+        let mut graph = AdjListGraph::from_nodes(nodes);
+        for edge in edges {
+            graph.add_edge(edge);
+        }
+        graph
     }
 }
 
@@ -153,20 +167,19 @@ mod tests {
         4 <---  3 <- 2
         */
 
-        let mut graph = AdjListGraph::new(10);
-        assert_eq!(graph.node_count(), 0);
-        assert_eq!(graph.edge_count(), 0);
-        for i in 0..5 {
-            assert_eq!(graph.add_node(i, i), true);
-        }
+        let graph = AdjListGraph::from_edges(
+            (0..5).collect(),
+            vec![
+                (0, 1, 1),
+                (0, 4, 4),
+                (1, 3, 2),
+                (1, 4, 3),
+                (2, 1, 1),
+                (2, 3, 1),
+                (3, 4, 1),
+            ],
+        );
         assert_eq!(graph.node_count(), 5);
-        graph.add_edge((0, 1, 1));
-        graph.add_edge((0, 4, 4));
-        graph.add_edge((1, 3, 2));
-        graph.add_edge((1, 4, 3));
-        graph.add_edge((2, 1, 1));
-        graph.add_edge((2, 3, 1));
-        graph.add_edge((3, 4, 1));
         assert_eq!(graph.edge_count(), 7);
         graph
     }
