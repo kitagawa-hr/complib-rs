@@ -237,17 +237,17 @@ mod tests {
     #[test]
     fn test_remove_node() {
         let mut graph = setup_graph();
-        assert_eq!(graph.remove_node(1), true);
+        assert!(graph.remove_node(1));
         assert_eq!(graph.node_count(), 4);
         assert_eq!(graph.edge_count(), 3);
         let v = graph.iter_edges().collect::<Vec<_>>();
         assert_eq!(v, vec![&(0, 4, 4), &(2, 3, 1), &(3, 4, 1),]);
-        assert_eq!(graph.remove_node(1), false);
+        assert!(!graph.remove_node(1));
     }
     #[test]
     fn test_remove_edge() {
         let mut graph = setup_graph();
-        assert_eq!(graph.remove_edge(0, 1), true);
+        assert!(graph.remove_edge(0, 1));
         assert_eq!(graph.edge_count(), 6);
         assert_eq!(graph.get_edge(0, 1), None);
     }

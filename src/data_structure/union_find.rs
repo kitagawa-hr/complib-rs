@@ -12,7 +12,7 @@ where
 {
     pub fn new(n: usize) -> Self {
         UnionFind {
-            parents: (0..n).map(|i| i).collect(),
+            parents: (0..n).collect(),
             ranks: vec![1; n],
             weights: vec![T::from(0u8); n],
         }
@@ -25,7 +25,7 @@ where
         let root = self.find(self.parents[x]);
         self.weights[x] = self.weights[x] + self.weights[self.parents[x]];
         self.parents[x] = root;
-        return root;
+        root
     }
 
     pub fn unite(&mut self, x: usize, y: usize, weight: T) -> bool {
