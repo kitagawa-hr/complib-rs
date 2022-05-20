@@ -1,4 +1,4 @@
-use super::graph::{Graph, WeightedEdge};
+use super::{Graph, WeightedEdge};
 use std::cmp::Reverse;
 
 // Result Container for Single Source Shortest Path
@@ -39,7 +39,7 @@ pub fn dijkstra<
 ) -> SSSPResult<W> {
     // (cost, position, pre_node)
     let mut costs: Vec<_> = (0..graph.node_count()).map(|_| inf).collect();
-    let mut pre_nodes: Vec<_> = (0..graph.node_count()).map(|i| i).collect();
+    let mut pre_nodes: Vec<_> = (0..graph.node_count()).collect();
     let mut visit_next = std::collections::BinaryHeap::new();
 
     costs[start] = zero;
