@@ -92,7 +92,7 @@ mod tests {
         assert_eq!(graph.node_count(), 0);
         assert_eq!(graph.edge_count(), 0);
         for i in 0..5 {
-            assert_eq!(graph.add_node(i, i), true);
+            assert!(graph.add_node(i, i));
         }
         assert_eq!(graph.node_count(), 5);
         graph.add_edge((0, 1, 1));
