@@ -29,7 +29,7 @@ fn union_find_test() {
             if com == 0 {
                 uf.unite(x, y, 0);
             } else {
-                v.push(if uf.equiv(x, y) { 1 } else { 0 })
+                v.push(i32::from(uf.equiv(x, y)));
             }
         }
         v.iter().join("\n")
