@@ -1,7 +1,11 @@
-/// Calculate each palindrome radius at s by
-/// [Manacher's algorithm](https://cp-algorithms.com/string/manacher.html).
+/// Calculate each palindrome radius at s by Manacher's algorithm
 ///
 /// Palindrome radius is defined as r where s[i-r..=i+r] is a palindrome.
+///
+/// References:
+/// * https://cp-algorithms.com/string/manacher.html
+/// * https://www.slideshare.net/hcpc_hokudai/ss-121539419
+///
 pub fn palindrome_radiuses<T: PartialEq>(s: &[T]) -> Vec<usize> {
     let mut left = 0;
     let mut right = 0;
