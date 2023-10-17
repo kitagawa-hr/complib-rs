@@ -45,7 +45,7 @@ impl<T: std::cmp::Ord> BinarySearch<T> for [T] {
 
 #[test]
 fn test_binary_search() {
-    let vec = vec![1, 2, 4, 6, 7, 12, 54, 60];
+    let vec = [1, 2, 4, 6, 7, 12, 54, 60];
 
     assert_eq!(partition_point(&0, &3, |&i| vec[i] < 4), 2);
     assert_eq!(partition_point(&0, &3, |&i| vec[i] <= 4), 3);

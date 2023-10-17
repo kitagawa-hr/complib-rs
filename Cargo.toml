@@ -2,7 +2,7 @@
 name = "complib-rs"
 version = "0.1.0"
 authors = ["Haruki Kitagawa <kitagawahr@gmail.com>"]
-edition = "2018"
+edition = "2021"
 exclude = ["assets/*"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
