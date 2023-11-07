@@ -11,3 +11,4 @@ itertools = "0.9"
 
 [dev-dependencies]
 proconio = "*"
+rand = "0.8.5"
