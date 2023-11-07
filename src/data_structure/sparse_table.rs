@@ -26,6 +26,7 @@ impl<T: Copy> SparseTable<T> {
     }
 }
 
+#[cfg(test)]
 mod test {
     use rand::{seq::SliceRandom, Rng};
 
