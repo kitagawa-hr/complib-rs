@@ -33,22 +33,24 @@ impl<T: Copy> SegmentTree<T> {
             self.data[index] = (self.combine)(self.data[index << 1], self.data[index << 1 | 1]);
         }
     }
+
     pub fn query(&self, l: usize, r: usize) -> T {
         let mut left = l + self.size;
         let mut right = r + self.size;
-        let mut result = self.unit;
+        let mut result_left = self.unit;
+        let mut result_right = self.unit;
         while left < right {
             if left & 1 == 1 {
-                result = (self.combine)(self.data[left], result);
+                result_left = (self.combine)(result_left, self.data[left]);
                 left += 1;
             }
             if right & 1 == 1 {
                 right -= 1;
-                result = (self.combine)(result, self.data[right]);
+                result_right = (self.combine)(self.data[right], result_right);
             }
             left >>= 1;
             right >>= 1;
         }
-        result
+        (self.combine)(result_left, result_right)
     }
 }
