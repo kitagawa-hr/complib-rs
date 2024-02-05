@@ -14,51 +14,24 @@ jobs:
     name: Tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+
       - name: Cache dependencies
-        uses: Swatinem/rust-cache@v1.3.0
+        uses: Swatinem/rust-cache@v2
+
+      - name: Install stable toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+
       - name: Run cargo check without any default features
-        uses: actions-rs/cargo@v1
-        with:
-          command: build
-          args: --verbose --no-default-features
-      - name: Run cargo test
-        uses: actions-rs/cargo@v1
-        with:
-          command: test
-          args: --verbose --no-default-features
+        run: cargo check --verbose --no-default-features
 
-  clippy:
-    name: Run Clippy
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: stable
-          override: true
-          components: clippy
-      - name: Cache dependencies
-        uses: Swatinem/rust-cache@v1.3.0
-      - name: Run cargo clippy
-        uses: actions-rs/cargo@v1
-        with:
-          command: clippy
-          args: --all-targets -- --deny warnings
-
-  fmt:
-    name: Run Rustfmt
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: stable
-          override: true
-          components: rustfmt
-      - name: Cache dependencies
-        uses: Swatinem/rust-cache@v1.3.0
       - name: Run cargo fmt
         run: cargo fmt --all -- --check
+
+      - name: Run cargo clippy
+        run: cargo clippy --all-targets --all-features -- --deny warnings
+
+      - name: Run cargo test
+        run: cargo test --verbose --no-default-features
