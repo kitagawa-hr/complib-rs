@@ -17,8 +17,8 @@ fn segment_tree_test() {
             n: usize,
             q: usize,
         }
-        let mut v = vec![(1 << 31) - 1; n];
-        let mut st = SegmentTree::new(&mut v, (1 << 31) - 1, std::cmp::min);
+        let v = vec![(1 << 31) - 1; n];
+        let mut st = SegmentTree::new(v, (1 << 31) - 1, std::cmp::min);
         let mut v = Vec::new();
         for _ in 0..q {
             input! {
@@ -28,9 +28,9 @@ fn segment_tree_test() {
                 y: usize,
             }
             if com == 0 {
-                st.update(x, y);
+                st.set(x, y);
             } else {
-                v.push(st.query(x, y + 1));
+                v.push(st.fold(x, y + 1));
             }
         }
         v.iter().join("\n")
