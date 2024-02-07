@@ -1,8 +1,8 @@
 /// Implementation of Z algorithm
 ///
 /// References:
-///   * https://codeforces.com/blog/entry/3107
-///   * https://snuke.hatenablog.com/entry/2014/12/03/214243
+///   * <https://codeforces.com/blog/entry/3107>
+///   * <https://snuke.hatenablog.com/entry/2014/12/03/214243>
 ///
 pub fn z_algorithm<T: PartialEq>(s: &[T]) -> Vec<usize> {
     let mut left = 0;
