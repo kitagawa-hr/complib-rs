@@ -8,7 +8,7 @@ pub struct UnionFind<T> {
 
 impl<T> UnionFind<T>
 where
-    T: Add<Output = T> + Clone + Copy + From<u8> + Sub<Output = T>,
+    T: Add<Output = T> + Sub<Output = T> + From<u8> + Copy,
 {
     pub fn new(n: usize) -> Self {
         UnionFind {
