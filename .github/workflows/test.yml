@@ -24,6 +24,9 @@ jobs:
         with:
           components: rustfmt, clippy
 
+      - name: Install nextest
+        uses: taiki-e/install-action@nextest
+
       - name: Run cargo check without any default features
         run: cargo check --verbose --no-default-features
 
@@ -34,4 +37,4 @@ jobs:
         run: cargo clippy --all-targets --all-features -- --deny warnings
 
       - name: Run cargo test
-        run: cargo test --verbose --no-default-features
+        run: cargo nextest run --verbose --no-default-features
